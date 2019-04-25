@@ -34,7 +34,7 @@ public class Nav_Quran extends Fragment {
         vPager = nav_quran.findViewById(R.id.view_pager);
         tbLayout = nav_quran.findViewById(R.id.tab_layout);
 
-        NavQuran_adapterTab adapterTab = new NavQuran_adapterTab(getFragmentManager());
+        NavQuran_adapterTab adapterTab = new NavQuran_adapterTab(getChildFragmentManager());
 
         adapterTab.addFragment(new NavQuran_Surah() , "Sureh");
         adapterTab.addFragment(new NavQuran_Juz() , "Juz");

@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.ermile.salamquran.NavQuran_Bookmark;
+import com.ermile.salamquran.NavQuran_Juz;
+import com.ermile.salamquran.NavQuran_Surah;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,7 @@ public class NavQuran_adapterTab extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int posetion) {
         return ftagment_list.get(posetion);
+
     }
 
     @Override
