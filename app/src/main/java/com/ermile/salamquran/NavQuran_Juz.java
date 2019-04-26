@@ -83,7 +83,6 @@ public class NavQuran_Juz extends Fragment {
                                             "",null,0));
                                     recylerview_juz.setLayoutManager(LayoutManager);
                                     recylerview_juz.setItemAnimator(new DefaultItemAnimator());
-                                    recylerview_juz.setAdapter(quranList_adapter);
 
                                     for(Iterator<String> key_juz = juz.keys();key_juz.hasNext();) {
                                         String get_keyhezb = key_juz.next();
@@ -144,7 +143,6 @@ public class NavQuran_Juz extends Fragment {
 
                                             recylerview_juz.setLayoutManager(LayoutManager);
                                             recylerview_juz.setItemAnimator(new DefaultItemAnimator());
-                                            recylerview_juz.setAdapter(quranList_adapter);
 
                                         }
 
@@ -169,6 +167,7 @@ public class NavQuran_Juz extends Fragment {
         });
         AppContoroler.getInstance().addToRequestQueue(req);
 
+        recylerview_juz.setAdapter(quranList_adapter);
 
 
 

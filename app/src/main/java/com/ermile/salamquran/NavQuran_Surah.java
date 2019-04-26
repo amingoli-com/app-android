@@ -78,7 +78,6 @@ public class NavQuran_Surah extends Fragment {
                                             String.valueOf(page_juz),null,0));
                                     recylerview_surah.setLayoutManager(LayoutManager);
                                     recylerview_surah.setItemAnimator(new DefaultItemAnimator());
-                                    recylerview_surah.setAdapter(quranList_adapter);
 
 
 
@@ -106,7 +105,6 @@ public class NavQuran_Surah extends Fragment {
                                                         page_surah,null,0));
                                                 recylerview_surah.setLayoutManager(LayoutManager);
                                                 recylerview_surah.setItemAnimator(new DefaultItemAnimator());
-                                                recylerview_surah.setAdapter(quranList_adapter);
 
                                             }
 
@@ -139,6 +137,7 @@ public class NavQuran_Surah extends Fragment {
 
 
 
+        recylerview_surah.setAdapter(quranList_adapter);
 
 
 
