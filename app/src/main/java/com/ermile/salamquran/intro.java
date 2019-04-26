@@ -97,6 +97,8 @@ public class intro extends AppCompatActivity {
             }
         });
 
+        viewpager.setCurrentItem(1);
+
 
 
 
@@ -137,8 +139,7 @@ public class intro extends AppCompatActivity {
 
 
 
-            int numberPage = position+1;
-            page = "https://salamquran.com/fa/api/v6/page/wbw?index="+String.valueOf(numberPage);
+            page = "https://salamquran.com/fa/api/v6/page/wbw?index="+String.valueOf(position);
 
 
             JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, page, null,

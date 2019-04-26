@@ -1,5 +1,6 @@
 package com.ermile.salamquran;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         /*Main Bottom Navigation */
         main_bottomNavigation = findViewById(R.id.main_bottomNavigation); /*sync id and input*/

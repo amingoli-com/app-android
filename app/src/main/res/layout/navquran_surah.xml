@@ -4,13 +4,20 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
     android:orientation="vertical"
-android:gravity="center"
-tools:context=".NavQuran_Juz">
+    android:id="@+id/linearLayout_surah"
+tools:context=".NavQuran_Surah">
+
+
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recylerview_juz"
+        android:id="@+id/recylerview_surah"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
+
+
+
+
+
 
 </LinearLayout>
