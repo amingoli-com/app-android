@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ermile.salamquran.adapter.NavQuran_adapterTab;
 
@@ -17,8 +16,8 @@ import com.ermile.salamquran.adapter.NavQuran_adapterTab;
  * A simple {@link Fragment} subclass.
  */
 public class Nav_Quran extends Fragment {
-    TabLayout tbLayout;
-    ViewPager vPager;
+    TabLayout tabLayout_NavQuran;
+    ViewPager viewPager_NavQuran;
 
     public Nav_Quran() {
         // Required empty public constructor
@@ -31,8 +30,8 @@ public class Nav_Quran extends Fragment {
         // Inflate the layout for this fragment
         View nav_quran = inflater.inflate(R.layout.nav_quran, container, false);
 
-        vPager = nav_quran.findViewById(R.id.view_pager);
-        tbLayout = nav_quran.findViewById(R.id.tab_layout);
+        viewPager_NavQuran = nav_quran.findViewById(R.id.viewPager_NavQuran);
+        tabLayout_NavQuran = nav_quran.findViewById(R.id.tabLayout_NavQuran);
 
         NavQuran_adapterTab adapterTab = new NavQuran_adapterTab(getChildFragmentManager());
 
@@ -40,8 +39,8 @@ public class Nav_Quran extends Fragment {
         adapterTab.addFragment(new NavQuran_Juz() , "Juz");
         adapterTab.addFragment(new NavQuran_Bookmark() , "Bookmark");
 
-        vPager.setAdapter(adapterTab);
-        tbLayout.setupWithViewPager(vPager);
+        viewPager_NavQuran.setAdapter(adapterTab);
+        tabLayout_NavQuran.setupWithViewPager(viewPager_NavQuran);
 
 
 
