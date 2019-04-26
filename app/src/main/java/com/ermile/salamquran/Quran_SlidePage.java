@@ -34,7 +34,7 @@ import org.json.JSONObject;
 
 import java.util.Collections;
 
-public class intro extends AppCompatActivity {
+public class Quran_SlidePage extends AppCompatActivity {
     String d_line_type = null;
     String d_name = null;
     String page = "1";
@@ -57,7 +57,7 @@ public class intro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // XML
-        setContentView(R.layout.intro);
+        setContentView(R.layout.quran__slidepage);
 
         // Chang ID XML
         dotsLayout = findViewById(R.id.layoutDots); // OOOO
@@ -97,7 +97,8 @@ public class intro extends AppCompatActivity {
             }
         });
 
-        viewpager.setCurrentItem(1);
+
+        viewpager.setCurrentItem(Integer.valueOf(getIntent().getStringExtra("open_page")));
 
 
 

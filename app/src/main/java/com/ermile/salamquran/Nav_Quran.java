@@ -45,21 +45,7 @@ public class Nav_Quran extends Fragment {
 
 
 
-
-
         return nav_quran;
 
-    }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        Toast.makeText(getContext(), "Pause", Toast.LENGTH_SHORT).show();
-        super.onPause();
     }
 }

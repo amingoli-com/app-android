@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".splash" />
-        <activity android:name=".intro" />
+        <activity android:name=".Quran_SlidePage"></activity>
     </application>
 
 </manifest>

@@ -102,21 +102,11 @@ public class NavQuran_Juz extends Fragment {
                                                 }
                                             }
 
-                                            /*if (!rubHezb.isNull("index_hizb")||!rubHezb.isNull("index_rub")){
-
-                                                if (rubHezb.getInt("index_rub") == 1){
-                                                    number_hezb = String.valueOf(rubHezb.getInt("index_hizb"));
-                                                }else {
-                                                    number_hezb = "";
-                                                }
-                                            }*/
                                             if (rubHezb.getInt("index_rub") == 1){
                                                 number_hezb = String.valueOf(HIZB);
                                             }else {
                                                 number_hezb = "";
                                             }
-
-
 
                                             int getHezb = rubHezb.getInt("index_rub");
 

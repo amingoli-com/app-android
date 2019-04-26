@@ -1,14 +1,16 @@
 package com.ermile.salamquran.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.load.engine.Resource;
+import com.ermile.salamquran.Quran_SlidePage;
 import com.ermile.salamquran.R;
 import com.ermile.salamquran.item.QuranList_item;
 
@@ -20,19 +22,20 @@ public class QuranList_adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     Context mContext;
     int total_types;
 
-
     public static class SurahTypeViewHolder extends RecyclerView.ViewHolder {
 
 
         TextView number_surah,title_surah,decs_surah,page_surah;
+        LinearLayout rootItem_surah;
 
         public SurahTypeViewHolder(View itemView) {
             super(itemView);
 
-            this.number_surah = (TextView) itemView.findViewById(R.id.number_surah);
-            this.title_surah = (TextView) itemView.findViewById(R.id.title_surah);
-            this.decs_surah = (TextView) itemView.findViewById(R.id.decs_surah);
-            this.page_surah = (TextView) itemView.findViewById(R.id.page_surah);
+            this.number_surah = itemView.findViewById(R.id.number_surah);
+            this.title_surah =  itemView.findViewById(R.id.title_surah);
+            this.decs_surah = itemView.findViewById(R.id.decs_surah);
+            this.page_surah = itemView.findViewById(R.id.page_surah);
+            this.rootItem_surah = itemView.findViewById(R.id.rootItem_sureh);
 
         }
 
@@ -42,12 +45,14 @@ public class QuranList_adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
         TextView title_juz , page_juz;
+        LinearLayout rootItem_juz;
 
         public JuzTypeViewHolder(View itemView) {
             super(itemView);
 
-            this.title_juz = (TextView) itemView.findViewById(R.id.title_juz);
-            this.page_juz = (TextView) itemView.findViewById(R.id.page_juz);
+            this.title_juz = itemView.findViewById(R.id.title_juz);
+            this.page_juz = itemView.findViewById(R.id.page_juz);
+            this.rootItem_juz = itemView.findViewById(R.id.rootItem_juz);
 
         }
 
@@ -57,20 +62,23 @@ public class QuranList_adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
         TextView number_hezb, title_hezb, decs_hezb, page_hezb;
+        LinearLayout rootItem_hizb;
 
         public HezbTypeViewHolder(View itemView) {
             super(itemView);
 
-            this.number_hezb = (TextView) itemView.findViewById(R.id.number_hezb);
-            this.title_hezb = (TextView) itemView.findViewById(R.id.title_hezb);
-            this.decs_hezb = (TextView) itemView.findViewById(R.id.decs_hezb);
-            this.page_hezb = (TextView) itemView.findViewById(R.id.page_hezb);
+            this.number_hezb = itemView.findViewById(R.id.number_hizb);
+            this.title_hezb = itemView.findViewById(R.id.title_hizb);
+            this.decs_hezb = itemView.findViewById(R.id.decs_hizb);
+            this.page_hezb = itemView.findViewById(R.id.page_hizb);
+            this.rootItem_hizb = itemView.findViewById(R.id.rootItem_hizb);
+
 
         }
 
     }
 
-    public QuranList_adapter(ArrayList<QuranList_item> data, Context context) {
+    public QuranList_adapter(ArrayList<QuranList_item> data, Context context ) {
         this.QuranList = data;
         this.mContext = context;
         total_types = QuranList.size();
@@ -117,8 +125,9 @@ public class QuranList_adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int listPosition) {
+        final Intent open_page = new Intent(mContext, Quran_SlidePage.class);/*Intent for Go to Page Quran*/
 
-        QuranList_item object = QuranList.get(listPosition);
+        final QuranList_item object = QuranList.get(listPosition);
         if (object != null) {
             switch (object.type) {
                 case QuranList_item.SURAH_TYPE:
@@ -127,24 +136,50 @@ public class QuranList_adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     ((QuranList_adapter.SurahTypeViewHolder) holder).decs_surah.setText(object.desc);
                     ((QuranList_adapter.SurahTypeViewHolder) holder).page_surah.setText(object.page);
 
+                    ((SurahTypeViewHolder) holder).rootItem_surah.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            open_page
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                    .putExtra("open_page", object.page);
+                            v.getContext().startActivity(open_page);
+                        }
+                    });
                     break;
+
                 case QuranList_item.JUZ_TYPE:
                     ((QuranList_adapter.JuzTypeViewHolder) holder).title_juz.setText(object.titles);
                     ((QuranList_adapter.JuzTypeViewHolder) holder).page_juz.setText(object.page);
 
+                    ((JuzTypeViewHolder) holder).rootItem_juz.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            open_page
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                    .putExtra("open_page", object.page);
+                            v.getContext().startActivity(open_page);
+                        }
+                    });
                     break;
-                case QuranList_item.HEZB_TYPE:
 
+                case QuranList_item.HEZB_TYPE:
                     ((QuranList_adapter.HezbTypeViewHolder) holder).number_hezb.setText(object.hezb);
                     ((QuranList_adapter.HezbTypeViewHolder) holder).title_hezb.setText(object.titles);
                     ((QuranList_adapter.HezbTypeViewHolder) holder).decs_hezb.setText(object.desc);
                     ((QuranList_adapter.HezbTypeViewHolder) holder).page_hezb.setText(object.page);
                     ((HezbTypeViewHolder) holder).number_hezb.setBackgroundResource(object.bg_hezb);
 
-
-
-
+                    ((HezbTypeViewHolder) holder).rootItem_hizb.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            open_page
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                    .putExtra("open_page", object.page);
+                            v.getContext().startActivity(open_page);
+                        }
+                    });
                     break;
+
             }
         }
 
