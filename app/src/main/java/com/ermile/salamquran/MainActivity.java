@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
                     .commit();
             return true;
         }
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+        Toast.makeText(this, ""+Boolean.toString(hasCapture), Toast.LENGTH_SHORT).show();
 
     }
 }
