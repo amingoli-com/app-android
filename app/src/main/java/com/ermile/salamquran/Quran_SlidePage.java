@@ -44,6 +44,7 @@ public class Quran_SlidePage extends AppCompatActivity {
     ViewpagersAdapter PagerAdapter;  // for View page
     RtlViewPager viewpager; //  for dots & Button in XML
     private LinearLayout dotsLayout; // dots in XML
+    private TextView number_pageQuran;
     public int count = 605; // Slide number
 
 
@@ -58,6 +59,7 @@ public class Quran_SlidePage extends AppCompatActivity {
 
         // Chang ID XML
         dotsLayout = findViewById(R.id.layoutDots); // OOOO
+        number_pageQuran = findViewById(R.id.number_pageQuran);
         ViewCompat.setLayoutDirection(dotsLayout,ViewCompat.LAYOUT_DIRECTION_LTR);
         viewpager = findViewById(R.id.view_pagers); // view page in XML
 
@@ -70,23 +72,17 @@ public class Quran_SlidePage extends AppCompatActivity {
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
-                Log.i("amin","onPageScrolled== "+i+"\n"+"float== "+v+"\n"+i1);
 
             }
 
             @Override
             public void onPageSelected(final int position) {
-                Log.i("amin","onPageSelected*********************************************"+position);
-
-                // changing the next button text 'NEXT' / 'GOT IT'
-                String url = "https://khadije.com/api/v5/android";
-
+                number_pageQuran.setText(String.valueOf(position));
 
             }
 
             @Override
             public void onPageScrollStateChanged(int i) {
-                Log.i("amin","onPageScrollStateChanged==================="+i);
 
 
 
