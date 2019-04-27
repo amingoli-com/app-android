@@ -17,7 +17,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,11 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Collections;
-
 public class Quran_SlidePage extends AppCompatActivity {
-    String d_line_type = null;
-    String d_name = null;
+    String dtail_line_type = null;
+    String dtail_nameSurah = null;
     String page = "1";
 
 
@@ -140,6 +137,8 @@ public class Quran_SlidePage extends AppCompatActivity {
 
 
 
+            final Typeface font_nabi=ResourcesCompat.getFont(context, R.font.nabi);
+            final Typeface font_bismellah =ResourcesCompat.getFont(context, R.font.bismillah);
             page = "https://salamquran.com/fa/api/v6/page/wbw?index="+String.valueOf(position);
 
 
@@ -152,93 +151,90 @@ public class Quran_SlidePage extends AppCompatActivity {
                                 if (ok) {
                                     JSONArray result = responses.getJSONArray("result");
                                     for (int i = 0 ; i<= result.length(); i++) {
-                                        JSONObject lines = result.getJSONObject(i);
+                                        JSONObject get_linesQuran = result.getJSONObject(i);
 
-                                        LinearLayout layout2 = new LinearLayout(view.getContext());
-                                        if (position == 0-2){
-                                            layout2.setLayoutParams(new LinearLayout.LayoutParams(
-                                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                    LinearLayout.LayoutParams.WRAP_CONTENT));
-                                        }else {
-                                            layout2.setLayoutParams(new LinearLayout.LayoutParams(
-                                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                    LinearLayout.LayoutParams.WRAP_CONTENT,Gravity.CENTER));
-                                        }
+                                        LinearLayout detial_lineLayout = new LinearLayout(view.getContext());
+                                        detial_lineLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                                        detial_lineLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                        ViewCompat.setLayoutDirection(detial_lineLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
 
-                                        layout2.setOrientation(LinearLayout.HORIZONTAL);
-                                        ViewCompat.setLayoutDirection(layout2,ViewCompat.LAYOUT_DIRECTION_RTL);
-                                        Typeface face=ResourcesCompat.getFont(context, R.font.nabi);
-                                        Typeface font_bismellah=ResourcesCompat.getFont(context, R.font.bismillah);
+                                        final TextView dtail_textview = new TextView(view.getContext());
+                                        dtail_textview.setTextSize(16);
+                                        dtail_textview.setTextColor(Color.parseColor("#000000"));
+                                        dtail_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                        dtail_textview.setTypeface(font_nabi);
 
 
+                                        background_slide.addView(detial_lineLayout);
+                                        detial_lineLayout.addView(dtail_textview);
 
-                                        background_slide.addView(layout2);
 
-
-
-                                        JSONObject detail = lines.getJSONObject("detail");
-                                        if (!detail.isNull("line_type")){
-                                            d_line_type = detail.getString("line_type");
+                                        JSONObject detail_lineQuarn = get_linesQuran.getJSONObject("detail");
+                                        if (!detail_lineQuarn.isNull("line_type")){
+                                            dtail_line_type = detail_lineQuarn.getString("line_type");
 
                                         }
 
 
-                                        if (d_line_type.equals("start_sura")){
-                                            if (!detail.isNull("name")){
-                                                d_name = detail.getString("name");
-                                                final TextView tv = new TextView(view.getContext());
-                                                tv.setTextSize(22);
-                                                tv.setTextColor(Color.parseColor("#000000"));
-                                                tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                                tv.setLayoutParams(new LinearLayout.LayoutParams(
+                                        if (dtail_line_type.equals("start_sura")){
+                                            if (!detail_lineQuarn.isNull("name")){
+                                                dtail_nameSurah = detail_lineQuarn.getString("name");
+
+                                                LinearLayout.LayoutParams layoutParams_titleSurah = new LinearLayout.LayoutParams(
                                                         ViewGroup.LayoutParams.MATCH_PARENT,
-                                                        ViewGroup.LayoutParams.WRAP_CONTENT,Gravity.CENTER));
-                                                tv.setBackgroundResource(R.drawable.surh_header);
-                                                tv.setTypeface(face);
-                                                layout2.addView(tv);
-
-                                                tv.setText(d_name);
-
+                                                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                        Gravity.CENTER
+                                                );
+                                                dtail_textview.setLayoutParams(layoutParams_titleSurah);
+                                                dtail_textview.setText("  " + dtail_nameSurah + "  ");
+                                                dtail_textview.setBackgroundResource(R.drawable.surh_header);
+                                                dtail_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                                dtail_textview.setTextSize(17);
 
 
                                             }
 
-                                        }else if (d_line_type.equals("besmellah")){
+                                        }else if (dtail_line_type.equals("besmellah")){
 
-                                            final TextView tv = new TextView(view.getContext());
-                                            tv.setTextSize(28);
-                                            tv.setTextColor(Color.parseColor("#000000"));
-                                            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                            tv.setLayoutParams(new LinearLayout.LayoutParams(
+                                            final TextView TitleBesmellah_textview = new TextView(view.getContext());
+                                            LinearLayout.LayoutParams layoutParams_besmellah = new LinearLayout.LayoutParams(
                                                     ViewGroup.LayoutParams.MATCH_PARENT,
-                                                    ViewGroup.LayoutParams.WRAP_CONTENT,Gravity.CENTER));
-                                            tv.setTypeface(font_bismellah);
-                                            layout2.addView(tv);
+                                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                    Gravity.CENTER
+                                            );
+                                            layoutParams_besmellah.topMargin = 5;
+                                            layoutParams_besmellah.bottomMargin = 5;
+                                            TitleBesmellah_textview.setTextSize(35);
+                                            TitleBesmellah_textview.setTextColor(Color.parseColor("#000000"));
+                                            TitleBesmellah_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                            TitleBesmellah_textview.setLayoutParams(layoutParams_besmellah);
+                                            TitleBesmellah_textview.setTypeface(font_bismellah);
+                                            detial_lineLayout.addView(TitleBesmellah_textview);
+                                            /*Set Text <Besmellah>*/
+                                            TitleBesmellah_textview.setText("﷽");
 
-                                            tv.setText("﷽");
-
-                                        }else {
-
-
-                                            JSONArray word = lines.getJSONArray("word");
+                                        }else  {
+                                            JSONArray word = get_linesQuran.getJSONArray("word");
                                             Log.i("amin","line word");
 
                                             for (int a = 0 ; a <= word.length() ; a++) {
                                                 LinearLayout layout3 = new LinearLayout(view.getContext());
                                                 layout3.setLayoutParams(new LinearLayout.LayoutParams(
-                                                        LinearLayout.LayoutParams.MATCH_PARENT,
-                                                        LinearLayout.LayoutParams.WRAP_CONTENT,Gravity.CENTER));
-                                                layout3.setOrientation(LinearLayout.HORIZONTAL);
+                                                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                                                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                layout3.setOrientation(LinearLayout.HORIZONTAL );
                                                 layout3.setWeightSum(1);
                                                 ViewCompat.setLayoutDirection(layout3,ViewCompat.LAYOUT_DIRECTION_RTL);
 
 
                                                 final TextView tv2 = new TextView(view.getContext());
-                                                tv2.setTextSize(13.5f);
+                                                tv2.setTextSize(12.9f);
                                                 tv2.setTextColor(Color.parseColor("#000000"));
                                                 tv2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                                tv2.setTypeface(face);
-                                                layout2.addView(layout3);
+                                                tv2.setTypeface(font_nabi);
+                                                detial_lineLayout.addView(layout3);
                                                 layout3.addView(tv2);
 
                                                 if(!word.isNull(a)){
@@ -246,9 +242,9 @@ public class Quran_SlidePage extends AppCompatActivity {
                                                     String text_aya = c_word.getString("text");
                                                     String text_ayaa = c_word.getString("aya");
                                                     if (text_aya.equals("null")){
-                                                        tv2.setText("(" + text_ayaa + ")");
+                                                        tv2.append("(" + text_ayaa + ")");
                                                     }else {
-                                                        tv2.setText(" "+ text_aya);
+                                                        tv2.append(" "+ text_aya);
                                                     }
                                                     Log.i("amin",text_aya );
 

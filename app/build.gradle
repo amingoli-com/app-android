@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.github.lsjwzh.RecyclerViewPager:lib:v1.1.2'
     implementation 'com.duolingo.open:rtl-viewpager:1.0.3'
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.2'
+    implementation 'com.github.wangfeng19930909:DragFloatingActionButton:1.0.1'
 
 /*    implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'*/
