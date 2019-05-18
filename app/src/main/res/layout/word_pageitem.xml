@@ -47,33 +47,38 @@
 
 
             <TextView
+                android:tag="aya1"
                 android:id="@+id/word_of_quran"
                 android:text="بِسْمِ"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:tag="aya1"
                 android:text="الله"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:tag="aya1"
                 android:text="الرحمن"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:tag="aya1"
                 android:text="الرحیم"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:tag="aya1"
                 android:text="(۱)"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -86,33 +91,32 @@
 
 
             <TextView
-                android:id="@+id/word_of_quran"
                 android:text="بِسْمِ"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الله"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الرحمن"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الرحیم"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="(۱)"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -125,33 +129,32 @@
 
 
             <TextView
-                android:id="@+id/word_of_quran"
                 android:text="بِسْمِ"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الله"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الرحمن"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الرحیم"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="(۱)"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -164,33 +167,32 @@
 
 
             <TextView
-                android:id="@+id/word_of_quran"
                 android:text="بِسْمِ"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الله"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الرحمن"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="الرحیم"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="(۱)"
-                android:fontFamily="@font/nabi"
+                android:fontFamily="@font/font_nabi"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

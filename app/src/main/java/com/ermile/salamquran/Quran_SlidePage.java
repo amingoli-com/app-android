@@ -4,21 +4,25 @@ package com.ermile.salamquran;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.sax.RootElement;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,9 +35,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Quran_SlidePage extends AppCompatActivity {
-    String dtail_line_type = null;
-    String dtail_nameSurah = null;
+    String lineType_detail = null;
+    String nameSurah_json = null;
     String page = "1";
 
 
@@ -43,10 +49,8 @@ public class Quran_SlidePage extends AppCompatActivity {
 
     ViewpagersAdapter PagerAdapter;  // for View page
     RtlViewPager viewpager; //  for dots & Button in XML
-    private LinearLayout dotsLayout; // dots in XML
-    private TextView number_pageQuran;
+    private TextView number_pageQuran , number_juzQuran,title_surahQuran;
     public int count = 605; // Slide number
-
 
     /**
      * onCreate Method
@@ -58,9 +62,9 @@ public class Quran_SlidePage extends AppCompatActivity {
         setContentView(R.layout.quran_slidepage);
 
         // Chang ID XML
-        dotsLayout = findViewById(R.id.layoutDots); // OOOO
         number_pageQuran = findViewById(R.id.number_pageQuran);
-        ViewCompat.setLayoutDirection(dotsLayout,ViewCompat.LAYOUT_DIRECTION_LTR);
+        number_juzQuran = findViewById(R.id.number_juzQuran);
+        title_surahQuran = findViewById(R.id.title_surahQuran);
         viewpager = findViewById(R.id.view_pagers); // view page in XML
 
         // set
@@ -78,6 +82,87 @@ public class Quran_SlidePage extends AppCompatActivity {
             @Override
             public void onPageSelected(final int position) {
                 number_pageQuran.setText(String.valueOf(position));
+
+                page = "https://salamquran.com/fa/api/v6/page/wbw?index="+String.valueOf(position);
+
+
+                JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, page, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject responses) {
+                                try {
+                                    Boolean ok = responses.getBoolean("ok");
+                                    String textTop_surah , textTop_juz ;
+
+                                    if (ok) {
+                                        JSONArray result = responses.getJSONArray("result");
+                                        for (int i = 0 ; i<= result.length(); i++) {
+                                            JSONObject get_linesQuran = result.getJSONObject(i);
+
+
+                                            JSONObject detail_jsonObject = get_linesQuran.getJSONObject("detail");
+                                            if (!detail_jsonObject.isNull("line_type")){
+                                                lineType_detail = detail_jsonObject.getString("line_type");
+
+                                            }
+
+
+                                            /* Title Header Surah */
+                                            if (lineType_detail.equals("start_sura")){
+                                                if (!detail_jsonObject.isNull("tname")){
+                                                    textTop_surah = detail_jsonObject.getString("tname");
+                                                    title_surahQuran.setText(textTop_surah);
+
+                                                }
+
+
+
+                                            }
+                                            /* Besmellah */
+                                            else if (lineType_detail.equals("besmellah")){
+
+                                            }else  {
+                                                JSONArray wordQuran_jsonArray = get_linesQuran.getJSONArray("word");
+
+                                                /*Get Word's of Quran */
+                                                for (int a = 0 ; a <= wordQuran_jsonArray.length() ; a++) {
+
+                                                    if(!wordQuran_jsonArray.isNull(a)){
+                                                        JSONObject object_wordQuran_JsonArray = wordQuran_jsonArray.getJSONObject(a);
+                                                        textTop_juz = object_wordQuran_JsonArray.getString("juz");
+                                                        number_juzQuran.setText("Juz"+textTop_juz);
+
+                                                    }
+
+                                                }
+
+
+
+
+                                            }
+
+
+
+
+
+
+
+                                        }
+
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+                AppContoroler.getInstance().addToRequestQueue(req);
+
+
 
             }
 
@@ -133,9 +218,12 @@ public class Quran_SlidePage extends AppCompatActivity {
 
 
 
-            final Typeface font_nabi=ResourcesCompat.getFont(context, R.font.nabi);
+
+            final Typeface font_nabi=ResourcesCompat.getFont(context, R.font.font_nabi);
             final Typeface font_bismellah =ResourcesCompat.getFont(context, R.font.bismillah);
             page = "https://salamquran.com/fa/api/v6/page/wbw?index="+String.valueOf(position);
+
+            final ArrayList<String> TAG_WBW = new ArrayList<String>();
 
 
             JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, page, null,
@@ -148,111 +236,147 @@ public class Quran_SlidePage extends AppCompatActivity {
                                     JSONArray result = responses.getJSONArray("result");
                                     for (int i = 0 ; i<= result.length(); i++) {
                                         JSONObject get_linesQuran = result.getJSONObject(i);
+                                        final View parrentView = background_slide.getChildAt(getCount());
 
-                                        LinearLayout detial_lineLayout = new LinearLayout(view.getContext());
-                                        detial_lineLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                                        LinearLayout lineLayout_surah_besmellah = new LinearLayout(view.getContext());
+                                        background_slide.addView(lineLayout_surah_besmellah);
+                                        lineLayout_surah_besmellah.setLayoutParams(new LinearLayout.LayoutParams(
                                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                                 LinearLayout.LayoutParams.WRAP_CONTENT));
-                                        detial_lineLayout.setOrientation(LinearLayout.HORIZONTAL);
-                                        ViewCompat.setLayoutDirection(detial_lineLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
-
-                                        final TextView dtail_textview = new TextView(view.getContext());
-                                        dtail_textview.setTextSize(16);
-                                        dtail_textview.setTextColor(Color.parseColor("#000000"));
-                                        dtail_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                        dtail_textview.setTypeface(font_nabi);
+                                        lineLayout_surah_besmellah.setOrientation(LinearLayout.HORIZONTAL);
+                                        ViewCompat.setLayoutDirection(lineLayout_surah_besmellah,ViewCompat.LAYOUT_DIRECTION_RTL);
 
 
-                                        background_slide.addView(detial_lineLayout);
-                                        detial_lineLayout.addView(dtail_textview);
 
-
-                                        JSONObject detail_lineQuarn = get_linesQuran.getJSONObject("detail");
-                                        if (!detail_lineQuarn.isNull("line_type")){
-                                            dtail_line_type = detail_lineQuarn.getString("line_type");
+                                        JSONObject detail_jsonObject = get_linesQuran.getJSONObject("detail");
+                                        if (!detail_jsonObject.isNull("line_type")){
+                                            lineType_detail = detail_jsonObject.getString("line_type");
 
                                         }
 
 
-                                        if (dtail_line_type.equals("start_sura")){
-                                            if (!detail_lineQuarn.isNull("name")){
-                                                dtail_nameSurah = detail_lineQuarn.getString("name");
+                                        /* Title Header Surah */
+                                        switch (lineType_detail) {
+                                            case "start_sura":
+                                                if (!detail_jsonObject.isNull("name")) {
+                                                    nameSurah_json = detail_jsonObject.getString("name");
 
-                                                LinearLayout.LayoutParams layoutParams_titleSurah = new LinearLayout.LayoutParams(
+                                                    final AppCompatTextView TitleSurah_textView = new AppCompatTextView(view.getContext());
+                                                    lineLayout_surah_besmellah.addView(TitleSurah_textView);
+                                                    LinearLayout.LayoutParams layoutParams_titleSurah = new LinearLayout.LayoutParams(
+                                                            ViewGroup.LayoutParams.MATCH_PARENT,
+                                                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                            Gravity.CENTER
+                                                    );
+                                                    TitleSurah_textView.setTextSize(16);
+                                                    TitleSurah_textView.setTextColor(Color.parseColor("#000000"));
+                                                    TitleSurah_textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                                    TitleSurah_textView.setTypeface(font_nabi);
+                                                    TitleSurah_textView.setLayoutParams(layoutParams_titleSurah);
+                                                    TitleSurah_textView.setText("  " + nameSurah_json + "  ");
+                                                    TitleSurah_textView.setBackgroundResource(R.drawable.surh_header);
+                                                    TitleSurah_textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                                    TitleSurah_textView.setTextSize(17);
+                                                }
+
+
+                                                break;
+                                            /* Besmellah */
+                                            case "besmellah":
+                                                final TextView TitleBesmellah_textview = new TextView(view.getContext());
+                                                LinearLayout.LayoutParams layoutParams_besmellah = new LinearLayout.LayoutParams(
                                                         ViewGroup.LayoutParams.MATCH_PARENT,
                                                         ViewGroup.LayoutParams.WRAP_CONTENT,
                                                         Gravity.CENTER
                                                 );
-                                                dtail_textview.setLayoutParams(layoutParams_titleSurah);
-                                                dtail_textview.setText("  " + dtail_nameSurah + "  ");
-                                                dtail_textview.setBackgroundResource(R.drawable.surh_header);
-                                                dtail_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                                dtail_textview.setTextSize(17);
+                                                layoutParams_besmellah.topMargin = 5;
+                                                layoutParams_besmellah.bottomMargin = 5;
+                                                TitleBesmellah_textview.setTextSize(35);
+                                                TitleBesmellah_textview.setTextColor(Color.parseColor("#000000"));
+                                                TitleBesmellah_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                                TitleBesmellah_textview.setLayoutParams(layoutParams_besmellah);
+                                                TitleBesmellah_textview.setTypeface(font_bismellah);
+                                                lineLayout_surah_besmellah.addView(TitleBesmellah_textview);
+                                                /*Set Text <Besmellah>*/
+                                                TitleBesmellah_textview.setText("﷽");
+                                                break;
 
+                                            /*get Word Quran*/
+                                            default:
+                                                JSONArray wordQuran_jsonArray = get_linesQuran.getJSONArray("word");
 
-                                            }
-
-                                        }else if (dtail_line_type.equals("besmellah")){
-
-                                            final TextView TitleBesmellah_textview = new TextView(view.getContext());
-                                            LinearLayout.LayoutParams layoutParams_besmellah = new LinearLayout.LayoutParams(
-                                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                    Gravity.CENTER
-                                            );
-                                            layoutParams_besmellah.topMargin = 5;
-                                            layoutParams_besmellah.bottomMargin = 5;
-                                            TitleBesmellah_textview.setTextSize(35);
-                                            TitleBesmellah_textview.setTextColor(Color.parseColor("#000000"));
-                                            TitleBesmellah_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                            TitleBesmellah_textview.setLayoutParams(layoutParams_besmellah);
-                                            TitleBesmellah_textview.setTypeface(font_bismellah);
-                                            detial_lineLayout.addView(TitleBesmellah_textview);
-                                            /*Set Text <Besmellah>*/
-                                            TitleBesmellah_textview.setText("﷽");
-
-                                        }else  {
-                                            JSONArray word = get_linesQuran.getJSONArray("word");
-                                            Log.i("amin","line word");
-
-                                            for (int a = 0 ; a <= word.length() ; a++) {
-                                                LinearLayout layout3 = new LinearLayout(view.getContext());
-                                                layout3.setLayoutParams(new LinearLayout.LayoutParams(
+                                                final LinearLayout linearLayout_wordQuran = new LinearLayout(view.getContext());
+                                                linearLayout_wordQuran.setLayoutParams(new LinearLayout.LayoutParams(
+                                                        LinearLayout.LayoutParams.MATCH_PARENT,
                                                         LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                                                layout3.setOrientation(LinearLayout.HORIZONTAL );
-                                                layout3.setWeightSum(1);
-                                                ViewCompat.setLayoutDirection(layout3,ViewCompat.LAYOUT_DIRECTION_RTL);
+                                                        Gravity.CENTER_HORIZONTAL));
+                                                linearLayout_wordQuran.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                                linearLayout_wordQuran.setOrientation(LinearLayout.HORIZONTAL);
+                                                ViewCompat.setLayoutDirection(linearLayout_wordQuran,
+                                                        ViewCompat.LAYOUT_DIRECTION_RTL);
+                                                lineLayout_surah_besmellah.addView(linearLayout_wordQuran);
+
+                                                /*Get Word's of Quran */
+                                                for (int a = 0; a <= wordQuran_jsonArray.length(); a++) {
+                                                    final TextView TextQuran_textview = new TextView(view.getContext());
+                                                    TextQuran_textview.setTextSize(12.1f);
+                                                    TextQuran_textview.setTextColor(Color.parseColor("#000000"));
+                                                    TextQuran_textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                                    TextQuran_textview.setTypeface(font_nabi);
+                                                    linearLayout_wordQuran.addView(TextQuran_textview);
 
 
-                                                final TextView tv2 = new TextView(view.getContext());
-                                                tv2.setTextSize(12.9f);
-                                                tv2.setTextColor(Color.parseColor("#000000"));
-                                                tv2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                                tv2.setTypeface(font_nabi);
-                                                detial_lineLayout.addView(layout3);
-                                                layout3.addView(tv2);
+                                                    if (!wordQuran_jsonArray.isNull(a)) {
+                                                        JSONObject object_wordQuran_JsonArray = wordQuran_jsonArray.getJSONObject(a);
 
-                                                if(!word.isNull(a)){
-                                                    JSONObject c_word = word.getJSONObject(a);
-                                                    String text_aya = c_word.getString("text");
-                                                    String text_ayaa = c_word.getString("aya");
-                                                    if (text_aya.equals("null")){
-                                                        tv2.append("(" + text_ayaa + ")");
-                                                    }else {
-                                                        tv2.append(" "+ text_aya);
+
+                                                        String textQuran_json =
+                                                                " " +
+                                                                        object_wordQuran_JsonArray.getString("text")
+                                                                + " ";
+                                                        String numberAya_json =
+                                                                " (" +
+                                                                        object_wordQuran_JsonArray.getString("aya")
+                                                                + ") ";
+
+                                                        if (textQuran_json.equals(" null ")) {
+                                                            TextQuran_textview.setText(numberAya_json);
+                                                        } else {
+                                                            TextQuran_textview.setText(textQuran_json);
+
+                                                        }
+                                                        TextQuran_textview.setTag(object_wordQuran_JsonArray.getString("aya"));
+                                                        /*TextQuran_textview.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                String getTag_textQuran = TextQuran_textview.getTag().toString();
+
+                                                                LinearLayout ins = (LinearLayout) background_slide.getChildAt(1);
+                                                                ins.getChildAt(2).setBackgroundColor(Color.RED);
+
+
+
+                                                                for (int row_quran = 0; row_quran < background_slide.getChildCount(); row_quran++)
+                                                                {
+                                                                    for (int word_quran = 0; word_quran < linearLayout_wordQuran.getChildCount(); word_quran++)
+                                                                    {
+                                                                        if (linearLayout_wordQuran.getChildAt(word_quran).getTag() != null &&
+                                                                                linearLayout_wordQuran.getChildAt(word_quran).getTag().equals(getTag_textQuran))
+                                                                        {
+                                                                            linearLayout_wordQuran.getChildAt(word_quran).setBackgroundColor(Color.BLUE);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        });*/
+
                                                     }
-                                                    Log.i("amin",text_aya );
 
                                                 }
 
-                                            }
 
-
-
-
+                                                break;
                                         }
-
 
 
 
@@ -260,6 +384,8 @@ public class Quran_SlidePage extends AppCompatActivity {
 
 
                                     }
+
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

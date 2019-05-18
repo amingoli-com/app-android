@@ -1,12 +1,20 @@
 package com.ermile.salamquran;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     Fragment fragment = null;
     BottomNavigationViewEx main_bottomNavigation;
-
+    FrameLayout fragment_container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_learn:
-                fragment = new Nav_Learn();
+                CommingSoon_sankbar();
                 break;
             case R.id.nav_meg:
                 fragment = new Nav_Mag();
@@ -95,10 +103,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 fragment = new Nav_Quran();
                 break;
             case R.id.nav_search:
-                fragment = new Nav_Serach();
+                CommingSoon_sankbar();
                 break;
             case R.id.nav_setting:
-                fragment = new Nav_Setting();
+                CommingSoon_sankbar();
                 break;
 
         }
@@ -109,5 +117,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void onPointerCaptureChanged(boolean hasCapture) {
         Toast.makeText(this, ""+Boolean.toString(hasCapture), Toast.LENGTH_SHORT).show();
 
+    }
+
+    public void CommingSoon_sankbar(){
+        fragment_container = findViewById(R.id.fragment_container);
+        Snackbar snackbar = Snackbar.make(fragment_container, "صبور باشید ما توسعه دهنده ایم!", Snackbar.LENGTH_INDEFINITE);
+        View sbView = snackbar.getView();
+        LinearLayout.LayoutParams layoutParams_snakbar = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER
+        );
+        sbView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        sbView.setLayoutParams(layoutParams_snakbar);
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        snackbar.setDuration(500);
+        snackbar.show();
     }
 }

@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         android:layout_weight="9"/>
 
+
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/main_bottomNavigation"
         android:layout_width="match_parent"
@@ -19,6 +20,8 @@
         android:layout_weight="1"
         app:menu="@menu/main_navigation"
         android:background="#ffffff"/>
+
+
 
 
 </LinearLayout>
