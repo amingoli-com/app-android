@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,6 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -43,7 +48,7 @@ public class NavQuran_Juz extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View navquran_juz = inflater.inflate(R.layout.navquran_juz, container, false);
+        final View navquran_juz = inflater.inflate(R.layout.navquran_juz, container, false);
 
         final ArrayList<QuranList_item> quranlist= new ArrayList<>();
 
@@ -62,6 +67,19 @@ public class NavQuran_Juz extends Fragment {
                     @Override
                     public void onResponse(JSONObject responses) {
                         try {
+
+                            try {
+                                Writer output = null;
+                                File file = new File("storage/MyIdea/MyCompositions/" + "JUZ" + ".json");
+                                output = new BufferedWriter(new FileWriter(file));
+                                output.write(responses.toString());
+                                output.close();
+                                Toast.makeText(navquran_juz.getContext(), "Composition saved", Toast.LENGTH_LONG).show();
+
+                            } catch (Exception e) {
+                                Toast.makeText(navquran_juz.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
                             Boolean ok = responses.getBoolean("ok");
                             if (ok) {
                                 JSONObject result = responses.getJSONObject("result");
